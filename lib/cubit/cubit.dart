@@ -35,12 +35,6 @@ class NewsCubit extends Cubit<NewsStates> {
       ),
       label: 'Science',
     ),
-    BottomNavigationBarItem(
-      icon: Icon(
-        Icons.settings,
-      ),
-      label: 'Settings',
-    ),
   ];
   List<Widget> screens = [
     BusinessScreen(),
@@ -48,13 +42,16 @@ class NewsCubit extends Cubit<NewsStates> {
     ScienceScreen(),
     SettingsScreen(),
   ];
+
   void changeBottomNavBar(int index) {
     currentIndex = index;
     if (index == 1) getSports();
     if (index == 2) getScience();
     emit(NewsBottomNavState());
   }
+
   List<dynamic> business = [];
+
   void getBusiness() {
     emit(NewsGetBusinessLoadingState());
     DioHelper.getData(
@@ -66,7 +63,6 @@ class NewsCubit extends Cubit<NewsStates> {
       },
     ).then((value) {
       business = value?.data['articles'];
-      print(business[0]['title']);
       emit(NewsGetBusinessSuccessState());
     }).catchError((error) {
       print(error.toString());
@@ -75,6 +71,7 @@ class NewsCubit extends Cubit<NewsStates> {
   }
 
   List<dynamic> sports = [];
+
   void getSports() {
     emit(NewsGetSportsLoadingState());
     if (sports.length == 0) {
@@ -87,7 +84,7 @@ class NewsCubit extends Cubit<NewsStates> {
         },
       ).then((value) {
         sports = value?.data['articles'];
-        print(sports[0]['title']);
+
         emit(NewsGetSportsSuccessState());
       }).catchError((error) {
         print(error.toString());
@@ -98,11 +95,11 @@ class NewsCubit extends Cubit<NewsStates> {
     }
   }
 
-
   List<dynamic> science = [];
+
   void getScience() {
     emit(NewsGetScienceLoadingState());
-    if(science.length== 0 ){
+    if (science.length == 0) {
       DioHelper.getData(
         url: 'v2/top-headlines',
         query: {
@@ -112,16 +109,24 @@ class NewsCubit extends Cubit<NewsStates> {
         },
       ).then((value) {
         science = value?.data['articles'];
-        print(science[0]['title']);
-        emit(NewsGetScienceSuccessState());
+               emit(NewsGetScienceSuccessState());
       }).catchError((error) {
         print(error.toString());
         emit(NewsGetScienceErrorState(error.toString()));
       });
-    }else
-    {
+    } else {
       emit(NewsGetScienceSuccessState());
     }
+  }
+
+
+  bool isDark = true;
+  void changeAppMode()
+  {
+    isDark = !isDark ;
+
+    emit(NewsChangeThemeState());
 
   }
 }
+

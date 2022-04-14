@@ -1,5 +1,7 @@
 abstract class NewsStates {}
 
+
+
 class NewsInitialState extends NewsStates {}
 
 class NewsBottomNavState extends NewsStates {}
@@ -36,3 +38,5 @@ class NewsGetScienceErrorState extends NewsStates
 
   NewsGetScienceErrorState(this.error);
 }
+
+class NewsChangeThemeState extends NewsStates {}
